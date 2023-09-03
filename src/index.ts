@@ -1,6 +1,8 @@
 import { program } from 'commander';
 import { crt } from './crt';
 import * as source from './source';
+import { getPackageJsonObject } from './files';
+const pkg = getPackageJsonObject();
 
 program.name('ying').helpOption(false);
 
@@ -16,5 +18,5 @@ sourceProgram.command('delete').alias('d').description('删除自定义镜像').
 sourceProgram.command('rename').description('重命名自定义镜像').action(source.rename);
 sourceProgram.command('edit').description('编辑自定义镜像').action(source.edit);
 
-program.version(`${require('../package.json').version}`, '-v --version');
+program.version(`${pkg.version}`, '-v --version');
 program.parse(process.argv);

@@ -1,12 +1,11 @@
 import { exec, execSync } from 'child_process';
 import * as inquirer from 'inquirer';
-import * as fs from 'node:fs';
 import * as chalk from 'chalk';
-import * as path from 'node:path';
 import spinner from '../ora';
 import { pingUrl } from '../utils';
+import { getRegistriesJsonObject, setRegistriesJson } from '../files';
 
-const registries = require('../../registries.json');
+const registries = getRegistriesJsonObject();
 const whiteList = ['npm', 'yarn', 'tencent', 'cnpm', 'taobao', 'npmMirror'];
 
 const getOrigin = () => {
@@ -137,8 +136,9 @@ export function add() {
         registry: result.url.trim(),
         ping: pingFormat(result.url.trim()),
       };
+
       try {
-        fs.writeFileSync(path.join(__dirname, '../registries.json'), JSON.stringify(registries, null, 2));
+        setRegistriesJson(JSON.stringify(registries, null, 2));
         spinner.succeed(chalk.green('添加完成'));
       } catch (e) {
         spinner.fail(chalk.red(e));
@@ -170,7 +170,7 @@ export function del() {
         } else {
           try {
             delete registries[result.sel];
-            fs.writeFileSync(path.join(__dirname, '../registries.json'), JSON.stringify(registries, null, 2));
+            setRegistriesJson(JSON.stringify(registries, null, 2));
             spinner.succeed(chalk.green('删除成功'));
           } catch (error) {
             spinner.fail(chalk.red(error));
@@ -216,7 +216,7 @@ export function rename() {
         delete registries[result.sel];
 
         try {
-          fs.writeFileSync(path.join(__dirname, '../registries.json'), JSON.stringify(registries, null, 2));
+          setRegistriesJson(JSON.stringify(registries, null, 2));
           spinner.succeed(chalk.green(`重命名完成 ${result.rename}`));
         } catch (e) {
           spinner.fail(chalk.red(e));
@@ -262,7 +262,7 @@ export async function edit() {
   };
 
   try {
-    fs.writeFileSync(path.join(__dirname, '../registries.json'), JSON.stringify(registries, null, 2));
+    setRegistriesJson(JSON.stringify(registries, null, 2));
     spinner.succeed(chalk.green('修改完成'));
   } catch (e) {
     spinner.fail(chalk.red(e));
