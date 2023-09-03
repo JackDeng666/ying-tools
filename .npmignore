@@ -1,5 +1,6 @@
 /node_modules
 /lib
 /src
+rollup.config.mjs
 tsconfig.json
 .prettierrc
