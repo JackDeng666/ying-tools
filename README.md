@@ -32,6 +32,8 @@ ying crt test-project
 ying src ls
 ```
 
+src 用于管理切换 npm 镜像源，模仿 nrm 的操作。
+
 ### src 详细
 
 ```bash
