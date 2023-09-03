@@ -1,7 +1,7 @@
 ## 嘤之工具库
 
 ```bash
-npm i ying-tool -g
+npm i ying-tools -g
 ying -v
 ```
 
