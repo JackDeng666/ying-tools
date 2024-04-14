@@ -1,6 +1,9 @@
 /node_modules
-/lib
 /src
-rollup.config.mjs
-tsconfig.json
+.gitignore
+.prettierignore
 .prettierrc
+LICENSE.md
+pnpm-lock.yaml
+rollup.config.js
+tsconfig.json

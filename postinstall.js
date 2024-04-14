@@ -7,6 +7,8 @@ console.log(`
    ██║   ██║██║ ╚████║╚██████╔╝
    ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
-`);
+`)
 
-console.log('ying -v');
+console.log('use the following command to test:')
+
+console.log('ying -v')

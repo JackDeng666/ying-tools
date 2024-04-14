@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { existsSync, statSync, readdirSync, unlinkSync, rmdirSync, mkdirSync, copyFileSync } from 'node:fs';
-import { PathLike } from 'node:fs';
-import { resolve } from 'node:path';
+import axios from 'axios'
+import type { PathLike } from 'fs'
+import { existsSync, statSync, readdirSync, unlinkSync, rmdirSync, mkdirSync, copyFileSync } from 'fs'
+import { resolve } from 'path'
 
 /**
  *
@@ -11,54 +11,54 @@ import { resolve } from 'node:path';
 export function delFile(path: PathLike, reservePath?: PathLike) {
   if (existsSync(path)) {
     if (statSync(path).isDirectory()) {
-      let files = readdirSync(path);
+      let files = readdirSync(path)
       files.forEach((file, index) => {
-        let currentPath = path + '/' + file;
+        let currentPath = path + '/' + file
         if (statSync(currentPath).isDirectory()) {
-          delFile(currentPath, reservePath);
+          delFile(currentPath, reservePath)
         } else {
-          unlinkSync(currentPath);
+          unlinkSync(currentPath)
         }
-      });
+      })
       if (path != reservePath) {
-        rmdirSync(path);
+        rmdirSync(path)
       }
     } else {
-      unlinkSync(path);
+      unlinkSync(path)
     }
   }
 }
 
 const isExist = (path: PathLike) => {
   if (!existsSync(path)) {
-    mkdirSync(path);
+    mkdirSync(path)
   }
-};
+}
 
 export const copyFile = (sourcePath: string, targetPath: string) => {
-  isExist(targetPath);
-  const sourceFile = readdirSync(sourcePath, { withFileTypes: true });
+  isExist(targetPath)
+  const sourceFile = readdirSync(sourcePath, { withFileTypes: true })
 
-  sourceFile.forEach((file) => {
-    const newSourcePath = resolve(sourcePath, file.name);
-    const newTargetPath = resolve(targetPath, file.name);
+  sourceFile.forEach(file => {
+    const newSourcePath = resolve(sourcePath, file.name)
+    const newTargetPath = resolve(targetPath, file.name)
     if (file.isDirectory()) {
-      isExist(newTargetPath);
-      copyFile(newSourcePath, newTargetPath);
+      isExist(newTargetPath)
+      copyFile(newSourcePath, newTargetPath)
     } else {
-      copyFileSync(newSourcePath, newTargetPath);
+      copyFileSync(newSourcePath, newTargetPath)
     }
-  });
-};
+  })
+}
 
 export function pingUrl(url: string) {
   return new Promise(async function (resolve, reject) {
-    const start = Date.now();
+    const start = Date.now()
     try {
-      await axios.get(url);
-      resolve(Date.now() - start);
+      await axios.get(url)
+      resolve(Date.now() - start)
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }

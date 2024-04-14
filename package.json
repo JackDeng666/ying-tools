@@ -1,6 +1,6 @@
 {
   "name": "ying-tools",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "嘤之工具库",
   "keywords": [
     "嘤",
@@ -11,39 +11,35 @@
     "管理切换npm源"
   ],
   "author": "JackDeng666",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JackDeng666/ying-tools.git"
+    "url": "git+https://github.com/JackDeng666/ying-tools.git"
   },
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "bin": {
     "ying": "index.js"
   },
   "scripts": {
-    "dev": "npm run build:ts && npm run dev:rollup | npm run dev:ts",
-    "dev:ts": "tsc -w -p tsconfig.json",
-    "dev:rollup": "rollup -c -w",
-    "build": "npm run build:ts && npm run build:rollup",
-    "build:ts": "rm -rf lib && tsc -b tsconfig.json",
-    "build:rollup": "rm -rf dist && rollup -c",
-    "postinstall": "node ./postinstall.js"
+    "prepare": "node postinstall.js",
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
   },
   "dependencies": {
-    "axios": "^1.5.0",
-    "chalk": "4",
-    "commander": "^11.0.0",
+    "axios": "^1.6.8",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
     "compressing": "^1.10.0",
-    "inquirer": "8"
+    "inquirer": "^9.2.18",
+    "ora": "^8.0.1"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-json": "^6.0.0",
-    "@types/inquirer": "8",
-    "@types/node": "^20.5.7",
-    "rollup": "^3.28.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^5.2.2"
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.12.7",
+    "rollup": "^4.14.2",
+    "typescript": "^5.4.5"
   }
 }
