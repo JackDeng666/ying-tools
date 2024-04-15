@@ -1,6 +1,6 @@
 {
   "name": "ying-tools",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "嘤之工具库",
   "keywords": [
     "嘤",
@@ -8,7 +8,8 @@
     "typescript",
     "tool",
     "下载github库",
-    "管理切换npm源"
+    "管理切换npm源",
+    "图片压缩"
   ],
   "author": "JackDeng666",
   "license": "MIT",
@@ -35,7 +36,8 @@
     "commander": "^12.0.0",
     "compressing": "^1.10.0",
     "inquirer": "^9.2.18",
-    "ora": "^8.0.1"
+    "ora": "^8.0.1",
+    "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",

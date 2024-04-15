@@ -1,12 +1,21 @@
 import { program } from 'commander'
+import { getPackageJsonObject } from './files'
 import { crt } from './crt'
 import * as source from './source'
-import { getPackageJsonObject } from './files'
+import { compressImage } from './compress-img'
+
 const pkg = getPackageJsonObject()
 
 program.name('ying').helpOption(true)
 
-program.command('crt').argument('[name]').description('从github下载开源项目并在当前文件夹重命名创建').action(crt)
+program.command('crt').argument('[name]').description('从 github 下载开源项目并在当前文件夹重命名创建').action(crt)
+
+program
+  .command('compress-img')
+  .alias('ci')
+  .argument('[imagesDir]')
+  .description('压缩指定文件夹的下的图片文件，目前仅支持[png,jpg,jpeg]')
+  .action(compressImage)
 
 const sourceProgram = program.command('src').description('管理切换npm镜像源')
 sourceProgram.command('ls').description('查看镜像').action(source.ls)
