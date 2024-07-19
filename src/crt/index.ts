@@ -19,22 +19,10 @@ export async function crt(name: string) {
   dirName = name
   const questionList: QuestionCollection[] = [
     {
-      type: 'list',
-      name: 'select',
-      message: '请选择',
-      choices: [
-        { name: '默认github用户：JackDeng666', value: 1 },
-        { name: '其他', value: 2 },
-      ],
-    },
-    {
       type: 'input',
       name: 'userName',
-      message: '请输入用户名',
+      message: '请输入Github用户名',
       default: 'JackDeng666',
-      when(preAn) {
-        return preAn.select == 2
-      },
     },
   ]
   fs.existsSync(`./${dirName}`) &&
@@ -45,10 +33,7 @@ export async function crt(name: string) {
     })
   const ret = await inquirer.prompt(questionList)
   delOrigin = ret.delOrigin
-  // 查询仓库
-  if (ret.select == 2) {
-    userName = ret.userName
-  }
+  userName = ret.userName
   await getRepos()
 }
 
