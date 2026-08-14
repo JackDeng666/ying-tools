@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 
 export default defineConfig({
   input: 'src/index.ts',
-  external: ['commander', 'axios', 'inquirer', 'chalk', 'compressing', 'ora', 'child_process', 'fs', 'path', 'url'],
+  external: ['commander', 'sharp', 'axios', 'inquirer', '@inquirer/prompts', 'chalk', 'compressing', 'ora'],
   output: {
     file: 'dist/index.js',
     format: 'es',

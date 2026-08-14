@@ -1,7 +1,7 @@
+import type { PathLike } from 'node:fs'
+import { existsSync, statSync, readdirSync, unlinkSync, rmdirSync, mkdirSync, copyFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import axios from 'axios'
-import type { PathLike } from 'fs'
-import { existsSync, statSync, readdirSync, unlinkSync, rmdirSync, mkdirSync, copyFileSync } from 'fs'
-import { resolve } from 'path'
 
 /**
  *
@@ -12,7 +12,7 @@ export function delFile(path: PathLike, reservePath?: PathLike) {
   if (existsSync(path)) {
     if (statSync(path).isDirectory()) {
       let files = readdirSync(path)
-      files.forEach((file, index) => {
+      files.forEach(file => {
         let currentPath = path + '/' + file
         if (statSync(currentPath).isDirectory()) {
           delFile(currentPath, reservePath)

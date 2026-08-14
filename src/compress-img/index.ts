@@ -1,7 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-import inquirer from 'inquirer'
-import type { QuestionCollection } from 'inquirer'
+import fs from 'node:fs'
+import path from 'node:path'
+import { select, input, number } from '@inquirer/prompts'
 import chalk from 'chalk'
 import sharp from 'sharp'
 import spinner from '@/ora'
@@ -9,24 +8,18 @@ import spinner from '@/ora'
 const imgExts = ['.png', '.jpg', '.jpeg']
 
 export async function compressImage(_imagesDir: string) {
-  let imagesDir = _imagesDir
-  let quality = 75
-  const res = await selectDirAndQuality(imagesDir)
-  imagesDir = res.dirname
-  quality = res.quality
+  const { dirname, compressedDirname, quality } = await selectDirAndQuality(_imagesDir)
 
   spinner.start(chalk.blue('读取图片中...'))
-  let outPutFileDir = res.compressDir
-
   try {
-    const imageFiles = getImageFiles(imagesDir)
+    const imageFiles = getImageFiles(dirname)
     const total = imageFiles.length
     let current = 0
     spinner.succeed(chalk.green('读取图片完成。'))
     spinner.start(chalk.blueBright('压缩图片中...'))
 
     imageFiles.forEach(async file => {
-      const outPutFile = file.replace(imagesDir, outPutFileDir)
+      const outPutFile = file.replace(dirname, compressedDirname)
       checkDirExistAndCreate(outPutFile)
 
       let sharpInstance = sharp(file, { limitInputPixels: false })
@@ -53,37 +46,26 @@ export async function compressImage(_imagesDir: string) {
   }
 }
 
-function selectDirAndQuality(dirname: string) {
-  const questionList: QuestionCollection[] = [
-    {
-      type: 'input',
-      name: 'compressDir',
-      message: '请输入压缩后的文件的存放位置',
-      default: pre => `${pre.dirname || dirname}_compress`,
-    },
-    {
-      type: 'number',
-      name: 'quality',
-      message: '请输入压缩质量[0~99]',
-      default: 75,
-    },
-  ]
-
+async function selectDirAndQuality(defaultDirname?: string) {
+  let dirname = defaultDirname
   if (!dirname) {
     const dirs = fs.readdirSync('.')
-
-    questionList.unshift({
-      type: 'list',
-      name: 'dirname',
+    dirname = await select({
       message: '请选择源文件的文件夹',
-      choices: dirs.map(name => ({
-        name,
-        value: name,
+      choices: dirs.map(dir => ({
+        name: dir,
+        value: dir,
       })),
     })
   }
+  const compressedDirname = await input({ message: '请输入压缩后的文件的存放位置', default: `${dirname}_compressed` })
+  const quality = await number({ message: '请输入压缩质量[0~99]', default: 75 })
 
-  return inquirer.prompt(questionList)
+  return {
+    dirname,
+    compressedDirname,
+    quality,
+  }
 }
 
 function getImageFiles(path: string): string[] {

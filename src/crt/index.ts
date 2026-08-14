@@ -1,7 +1,6 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import axios, { AxiosProgressEvent, AxiosResponse } from 'axios'
-import inquirer from 'inquirer'
-import { QuestionCollection } from 'inquirer'
+import { confirm, input, select } from '@inquirer/prompts'
 import chalk from 'chalk'
 import compressing from 'compressing'
 import spinner from '@/ora'
@@ -15,25 +14,16 @@ let userName = 'JackDeng666',
   size = 0,
   delOrigin = false
 
-export async function crt(name: string) {
-  dirName = name
-  const questionList: QuestionCollection[] = [
-    {
-      type: 'input',
-      name: 'userName',
-      message: '请输入Github用户名',
-      default: 'JackDeng666',
-    },
-  ]
-  fs.existsSync(`./${dirName}`) &&
-    questionList.unshift({
-      type: 'confirm',
-      name: 'delOrigin',
-      message: '此目录已存在，下载模板后是否删除，否将合并',
+export async function crt(dirname: string) {
+  if (fs.existsSync(`./${dirName}`)) {
+    delOrigin = await confirm({
+      message: '此目录已存在，下载模板后是否删除？(选否则合并)',
     })
-  const ret = await inquirer.prompt(questionList)
-  delOrigin = ret.delOrigin
-  userName = ret.userName
+  }
+  userName = await input({
+    message: '请输入Github用户名',
+    default: 'JackDeng666',
+  })
   await getRepos()
 }
 
@@ -57,15 +47,10 @@ async function getRepos() {
 
 // 选择仓库
 async function selectRepos(arr: { name: string; size: number }[]) {
-  let repo = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'repoName',
-      message: '请选择仓库',
-      choices: arr,
-    },
-  ])
-  repoName = repo.repoName
+  repoName = await select({
+    message: '请选择仓库',
+    choices: arr,
+  })
   // 粗略获取包大小
   const findRepos = arr.find(el => el.name === repoName)
   findRepos && (size = findRepos.size)
@@ -88,15 +73,10 @@ async function getTags() {
 
 // 选择版本标签
 async function selectTags(tags: GithubTagRes[]) {
-  let tag = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'tagName',
-      message: '请选择版本',
-      choices: tags,
-    },
-  ])
-  tagName = tag.tagName
+  tagName = select({
+    message: '请选择版本',
+    choices: tags,
+  })
   downLoad()
 }
 
