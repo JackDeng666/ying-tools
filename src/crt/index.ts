@@ -3,9 +3,11 @@ import axios, { AxiosProgressEvent, AxiosResponse } from 'axios'
 import { confirm, input, select } from '@inquirer/prompts'
 import chalk from 'chalk'
 import compressing from 'compressing'
-import spinner from '@/ora'
+import ora from 'ora'
 import { copyFile, delFile } from '@/utils.js'
 import { GithubReposRes, GithubTagRes } from './types.js'
+
+const spinner = ora()
 
 let userName = 'JackDeng666',
   repoName = null,

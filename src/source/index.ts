@@ -1,10 +1,11 @@
 import { exec, execSync } from 'node:child_process'
 import { select, input } from '@inquirer/prompts'
 import chalk from 'chalk'
-import spinner from '@/ora'
+import ora from 'ora'
 import { pingUrl } from '@/utils'
 import { getRegistriesJsonObject, setRegistriesJson } from '@/files'
 
+const spinner = ora()
 const registries = getRegistriesJsonObject()
 const whiteList = ['npm', 'yarn', 'tencent', 'cnpm', 'taobao', 'npmMirror']
 
