@@ -5,5 +5,4 @@
 .prettierrc
 LICENSE.md
 pnpm-lock.yaml
-rollup.config.js
 tsconfig.json
